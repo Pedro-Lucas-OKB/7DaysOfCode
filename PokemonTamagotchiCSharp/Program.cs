@@ -1,4 +1,5 @@
-﻿using PokemonRequest.Models;
+﻿using Newtonsoft.Json;
+using PokemonTamagotchiCSharp;
 using RestSharp;
 
 var pokemons = GetPokemons();
@@ -7,7 +8,7 @@ ShowPokemons(pokemons);
 
 var pokemon = GetPokemonById(ChoosePokemon(pokemons));
 
-Console.WriteLine(pokemon.Content);
+ShowPokemonDetails(pokemon);
 
 static PokemonResponse GetPokemons()
 {
@@ -64,4 +65,30 @@ static int ChoosePokemon(PokemonResponse pokemons)
     }
 
     return escolha;
+}
+
+static void ShowPokemonDetails(RestResponse pokemon)
+{
+    PokemonDetails? mascote = default!;
+    try
+    {
+        mascote = JsonConvert.DeserializeObject<PokemonDetails>(pokemon.Content!);
+
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.Message);
+        return;
+    }
+
+    Console.WriteLine("***** POKEMON *****");
+    Console.WriteLine($"Nome: {mascote!.Name}");
+    Console.WriteLine($"Altura: {mascote.Height}");
+    Console.WriteLine($"Peso: {mascote.Weight}");
+
+    Console.WriteLine("Habilidades:");
+    foreach (var ability in mascote.Abilities)
+    {
+        Console.WriteLine(ability.Ability.Name.ToUpper());
+    }
 }
