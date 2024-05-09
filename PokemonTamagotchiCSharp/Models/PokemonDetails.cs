@@ -1,9 +1,9 @@
-﻿namespace PokemonTamagotchiCSharp;
+﻿namespace PokemonTamagotchiCSharp.Models;
 
 public class PokemonDetails
 {
     public List<PokemonAbilities> Abilities { get; set; } = default!;
-    public string Name { get; set; } = default!;
+    public string? Name { get; set; } = default!;
     public int Order { get; set; } = default!;
     public int Height { get; set; } = default!;
     public int Weight { get; set; } = default!;

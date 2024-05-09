@@ -1,4 +1,4 @@
-using PokemonRequest.Models;
+namespace PokemonTamagotchiCSharp.Models;
 
 public class PokemonResponse
 {
