@@ -12,7 +12,8 @@ public class TamagotchiController
         AppUser = new User();
     }
 
-    public void Jogar() {
+    public void Jogar()
+    {
         Welcome();
         Menu();
     }
@@ -43,6 +44,7 @@ public class TamagotchiController
 
                 case 2:
                     ShowAdoptedPokemons();
+                    Interact();
                     break;
 
                 case 0:
@@ -85,8 +87,8 @@ public class TamagotchiController
             Console.WriteLine($"[1] Ver detalhes de {pokemon.Name}");
             Console.WriteLine($"[2] Adotar {pokemon.Name}");
             Console.WriteLine($"[3] Cancelar adoção");
-            while (!int.TryParse(Console.ReadLine(), out option)){}
-            
+            while (!int.TryParse(Console.ReadLine(), out option)) { }
+
             switch (option)
             {
                 case 1:
@@ -115,9 +117,11 @@ public class TamagotchiController
         if (AppUser.Pokemons != null)
         {
             var services = new PokemonServices();
-            foreach (var pokemon in AppUser.Pokemons)
+
+            for (int i = 0; i < AppUser.Pokemons.Count; i++)
             {
-                services.ShowPokemonDetails(pokemon);
+                Console.WriteLine($"----- [#{i + 1}] -----");
+                services.ShowPokemonDetails(AppUser.Pokemons[i]);
                 Console.WriteLine();
             }
         }
@@ -127,5 +131,28 @@ public class TamagotchiController
         }
 
         Console.ReadLine();
+    }
+
+    public void Interact()
+    {
+        if (AppUser.Pokemons != null)
+        {
+            int option = -1;
+            
+            while (true)
+            {
+                Console.WriteLine("Escolha um pokemon para interagir ou digite 0 para voltar: ");
+                while (!int.TryParse(Console.ReadLine(), out option)) { }
+    
+                if(option > 0 && option <= AppUser.Pokemons.Count) {
+                    var services = new PokemonServices();
+                    services.PokemonInteraction(AppUser.Pokemons[(option - 1)]);
+                }else if (option == 0) 
+                {
+                    break;
+                }
+                else Console.WriteLine("AVISO: Opção inválida!");
+            }
+        }
     }
 }
