@@ -7,10 +7,6 @@ public class PokemonDetails
     public int Order { get; set; } = default!;
     public int Height { get; set; } = default!;
     public int Weight { get; set; } = default!;
-
-    public int Hungry { get; set; } = new Random().Next(1, 11);
-    public int Humor { get; set; } = new Random().Next(1, 11);
-    public int Sleep { get; set; } = new Random().Next(1, 11);
 }
 
 public class PokemonAbilities

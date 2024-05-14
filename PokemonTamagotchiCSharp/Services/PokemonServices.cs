@@ -79,7 +79,7 @@ public class PokemonServices
         return pokemonDetails;
     }
 
-    public void ShowPokemonDetails(PokemonDetails? pokemon)
+    public void ShowPokemonDetails(MascotDto? pokemon)
     {
         Console.WriteLine("***** POKEMON *****");
         Console.WriteLine($"Nome: {pokemon.Name}");
@@ -89,36 +89,17 @@ public class PokemonServices
         Console.WriteLine("Habilidades:");
         foreach (var ability in pokemon.Abilities)
         {
-            Console.WriteLine(ability.Ability.Name.ToUpper());
+            Console.WriteLine(ability.Name.ToUpper());
         }
 
-        Console.WriteLine($"{pokemon.Name.ToUpper()} {HungryStatus(pokemon)}");
-        Console.WriteLine($"{pokemon.Name.ToUpper()} {HumorStatus(pokemon)}");
-        Console.WriteLine($"{pokemon.Name.ToUpper()} {SleepStatus(pokemon)}");
+        Console.WriteLine($"{pokemon.Name.ToUpper()} {pokemon.HungryStatus()}");
+        Console.WriteLine($"{pokemon.Name.ToUpper()} {pokemon.HumorStatus()}");
+        Console.WriteLine($"{pokemon.Name.ToUpper()} {pokemon.SleepStatus()}");
     }
 
-    public string HungryStatus(PokemonDetails pokemon)
-    {
-        if (pokemon.Hungry > 6) return "Está alimentado!";
-        else if (pokemon.Hungry > 3) return "Está levemente com fome!";
-        else return "Está com MUITA fome!";
-    }
+    
 
-    public string HumorStatus(PokemonDetails pokemon)
-    {
-        if (pokemon.Humor > 6) return "Está feliz!";
-        else if (pokemon.Humor > 3) return "Está um pouco triste!";
-        else return "Está MUITO triste! :(";
-    }
-
-    public string SleepStatus(PokemonDetails pokemon)
-    {
-        if (pokemon.Sleep > 6) return "Está bem descansado!";
-        else if (pokemon.Sleep > 3) return "Está levemente com sono!";
-        else return "Está com MUITO sono! Precisa dormir!";
-    }
-
-    public void PokemonInteraction(PokemonDetails? pokemon)
+    public void PokemonInteraction(MascotDto? pokemon)
     {
         int option = -1;
 
@@ -141,19 +122,19 @@ public class PokemonServices
                     break;
 
                 case 2:
-                    Feed(pokemon);
+                    pokemon.Feed();
                     Console.WriteLine($"{pokemon.Name} foi alimentado! :)");
                     Console.ReadLine();
                     break;
 
                 case 3:
-                    PlayWith(pokemon);
+                    pokemon.PlayWith();
                     Console.WriteLine($"{pokemon.Name} adorou brincar! :)");
                     Console.ReadLine();
                     break;
 
                 case 4:
-                    BedTime(pokemon);
+                    pokemon.BedTime();
                     Console.WriteLine($"{pokemon.Name} tirou uma soneca! :)");
                     Console.ReadLine();
                     break;
@@ -166,33 +147,6 @@ public class PokemonServices
                     break;
             }
         }
-    }
-
-    public void Feed(PokemonDetails pokemon)
-    {
-        if (pokemon.Hungry < 10) pokemon.Hungry += 1;
-
-        if (pokemon.Humor < 10) pokemon.Humor += 1;
-
-        if (pokemon.Sleep > 0) pokemon.Sleep -= 1;
-    }
-
-    public void PlayWith(PokemonDetails pokemon)
-    {
-        if (pokemon.Hungry > 0) pokemon.Hungry -= 1;
-
-        if (pokemon.Humor < 10) pokemon.Humor += 1;
-
-        if (pokemon.Sleep > 0) pokemon.Sleep -= 1;
-    }
-    
-    public void BedTime(PokemonDetails pokemon)
-    {
-        if (pokemon.Hungry > 0) pokemon.Hungry -= 1;
-
-        if (pokemon.Humor < 10) pokemon.Humor += 1;
-
-        if (pokemon.Sleep < 10) pokemon.Sleep += 1;
     }
 }
 

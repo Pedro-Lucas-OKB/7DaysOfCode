@@ -1,4 +1,5 @@
-﻿using PokemonTamagotchiCSharp.Models;
+﻿using AutoMapper;
+using PokemonTamagotchiCSharp.Models;
 using PokemonTamagotchiCSharp.Services;
 
 namespace PokemonTamagotchiCSharp.Controllers;
@@ -6,10 +7,17 @@ namespace PokemonTamagotchiCSharp.Controllers;
 public class TamagotchiController
 {
     public static User AppUser { get; set; } = default!;
+    public IMapper mapper;
 
     public TamagotchiController()
     {
         AppUser = new User();
+        var config = new MapperConfiguration(cfg => 
+        {
+            cfg.AddProfile<AutoMapperService>();
+        });
+
+        mapper = config.CreateMapper();
     }
 
     public void Jogar()
@@ -78,27 +86,30 @@ public class TamagotchiController
         var pokemonResponse = services.GetPokemonById(services.ChoosePokemon(pokemonsList));
 
         var pokemon = services.GetPokemonDetails(pokemonResponse);
+        MascotDto mascote = mapper.Map<MascotDto>(pokemon);
 
         int option = -1;
         while (option != 2)
         {
             Console.Clear();
             Console.WriteLine($"{AppUser.Name}, você deseja:");
-            Console.WriteLine($"[1] Ver detalhes de {pokemon.Name}");
-            Console.WriteLine($"[2] Adotar {pokemon.Name}");
+            Console.WriteLine($"[1] Ver detalhes de {mascote.Name}");
+            Console.WriteLine($"[2] Adotar {mascote.Name}");
             Console.WriteLine($"[3] Cancelar adoção");
             while (!int.TryParse(Console.ReadLine(), out option)) { }
 
             switch (option)
             {
                 case 1:
-                    services.ShowPokemonDetails(pokemon);
+                    services.ShowPokemonDetails(mascote);
                     Console.ReadLine();
                     break;
 
                 case 2:
                     if (AppUser.Pokemons == null) AppUser.Pokemons = [];
-                    AppUser.Pokemons.Add(pokemon);
+                    
+                    
+                    AppUser.Pokemons.Add(mascote);
                     break;
 
                 case 3:
