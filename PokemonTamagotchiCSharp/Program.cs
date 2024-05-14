@@ -1,9 +1,5 @@
-﻿using Newtonsoft.Json;
-using PokemonTamagotchiCSharp;
-using PokemonTamagotchiCSharp.Models;
-using RestSharp;
+﻿using PokemonTamagotchiCSharp.Controllers;
 
-var app = new TamagotchiApplication();
+var app = new TamagotchiController();
 
-app.Welcome();
-app.Menu();
+app.Jogar();

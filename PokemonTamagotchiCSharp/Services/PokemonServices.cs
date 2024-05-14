@@ -2,7 +2,7 @@
 using PokemonTamagotchiCSharp.Models;
 using RestSharp;
 
-namespace PokemonTamagotchiCSharp;
+namespace PokemonTamagotchiCSharp.Services;
 
 public class PokemonServices
 {

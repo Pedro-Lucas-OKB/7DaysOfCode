@@ -1,12 +1,20 @@
-﻿namespace PokemonTamagotchiCSharp.Models;
+﻿using PokemonTamagotchiCSharp.Models;
+using PokemonTamagotchiCSharp.Services;
 
-public class TamagotchiApplication
+namespace PokemonTamagotchiCSharp.Controllers;
+
+public class TamagotchiController
 {
     public static User AppUser { get; set; } = default!;
 
-    public TamagotchiApplication()
+    public TamagotchiController()
     {
         AppUser = new User();
+    }
+
+    public void Jogar() {
+        Welcome();
+        Menu();
     }
 
     public void Welcome()
