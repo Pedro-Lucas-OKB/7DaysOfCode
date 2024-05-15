@@ -8,27 +8,73 @@ public class PokemonServices
 {
     public PokemonResponse GetPokemons()
     {
-        var client = new RestClient($"https://pokeapi.co/api/v2/pokemon/");
-        var request = new RestRequest("", Method.Get);
+        try
+        {
+            var client = new RestClient($"https://pokeapi.co/api/v2/pokemon/");
+            var request = new RestRequest("", Method.Get);
 
-        var pokemons = client.Get<PokemonResponse>(request);
+            var pokemons = client.Get<PokemonResponse>(request);
 
-        return pokemons!;
+            if (pokemons.Results.Any())
+            {
+                return pokemons!;
+            }
+            else
+            {
+                Console.WriteLine($"AVISO: Ocorreu um erro ao tentar obter os pokemons");
+                return null;
+            }
+
+        }
+        catch (HttpRequestException ex)
+        {
+            Console.WriteLine($"AVISO: Ocorreu um erro ao fazer solicitação à API: {ex.Message}");
+            Environment.Exit(1);
+        }
+        catch (NullReferenceException ex)
+        {
+            Console.WriteLine($"AVISO: A requisição não retornou resultados! {ex.Message}");
+            Environment.Exit(1);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"AVISO: Ocorreu um erro inesperado! {ex.Message}");
+            Environment.Exit(1);
+        }
+        return null;
     }
 
     public RestResponse GetPokemonById(int id)
     {
-        var client = new RestClient($"https://pokeapi.co/api/v2/pokemon/{id}");
-        var request = new RestRequest("", Method.Get);
+        try
+        {
+            var client = new RestClient($"https://pokeapi.co/api/v2/pokemon/{id}");
+            var request = new RestRequest("", Method.Get);
 
-        var pokemon = client.Execute(request);
-
-        return pokemon!;
+            var pokemon = client.Execute(request);
+            if (pokemon.IsSuccessful)
+            {
+                return pokemon!;
+            }
+            else
+            {
+                Console.WriteLine($"AVISO: Ocorreu um erro ao tentar obter dados do pokemon");
+                Environment.Exit(1);
+            }
+        }
+        catch (NullReferenceException ex)
+        {
+            Console.WriteLine($"AVISO: Ocorreu um erro ao tentar obter dados da API: {ex.Message}");
+            Environment.Exit(1);
+        }
+        return null;
     }
 
     public void ShowPokemons(PokemonResponse pokemons)
     {
         Console.WriteLine("Pokémons disponíveis:");
+        if (pokemons == null) return;
+
         for (int i = 0; i < pokemons.Results.Count; i++)
         {
             Console.WriteLine($"{i + 1}. {pokemons.Results[i].Name}");
@@ -37,6 +83,7 @@ public class PokemonServices
 
     public int ChoosePokemon(PokemonResponse pokemons)
     {
+        if (pokemons == null) return -1;
         int escolha = -1;
         while (true)
         {
@@ -97,7 +144,7 @@ public class PokemonServices
         Console.WriteLine($"{pokemon.Name.ToUpper()} {pokemon.SleepStatus()}");
     }
 
-    
+
 
     public void PokemonInteraction(MascotDto? pokemon)
     {
